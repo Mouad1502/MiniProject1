@@ -12,6 +12,71 @@
             <input type="text" placeholder="Enter city name" spellcheck="false">
             <button><img src="/Weather-app/images/search.png"></button>
         </div>
+        <div class="weather">
+            <img src="/Weather-app/images/rain.png" class="weather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">Rabat</h2>
+            <div class="details">
+                
+                <div class="col">
+                    <img src="./images/humidity.png">
+                    <div>
+                        <p class="humidity">69%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="./images/wind.png">
+                    <div>
+                        <p class="wind">5 km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+<script>
+    const apiKey ="3f3dfa803f8117f7e649c581979bebdf";
+    const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+    const searchBox = document.querySelector(".search input");
+    const searchBtn = document.querySelector(".search button");
+
+    async function checkWeather(city){
+        const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+        var data = await response.json();
+        console.log(data);
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML =Math.round(data.main.temp) + "°C";
+        document.querySelector(".humidity").innerHTML = data.main.humidity+"%";
+        document.querySelector(".wind").innerHTML = data.wind.speed+" km/h";
+
+        switch(data.weather[0].main) {
+            case "Clouds":
+                document.querySelector(".weather-icon").src = "./images/clouds.png"
+                break;
+            case "Clear":
+                document.querySelector(".weather-icon").src = "./images/clear.png"                
+                break;
+            case "Drizzle":
+                document.querySelector(".weather-icon").src = "./images/drizzle.png"                
+                break;
+            case "Mist":
+                document.querySelector(".weather-icon").src = "./images/mist.png"                
+                break;
+            case "Rain":
+                document.querySelector(".weather-icon").src = "./images/rain.png"                
+                break;
+            case "Snow":
+                document.querySelector(".weather-icon").src = "./images/snow.png"                
+                break;
+            } 
+    }
+    searchBtn.addEventListener("click", ()=> {
+        checkWeather(searchBox.value);
+        document.querySelector(".search input").value="";
+    }); 
+
+</script>
 </body>
 </html>
